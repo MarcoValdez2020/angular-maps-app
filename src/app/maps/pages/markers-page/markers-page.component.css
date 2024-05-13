@@ -1,0 +1,35 @@
+#map{
+  width: 100vw;
+  height: 100vh;
+}
+
+button{
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+}
+
+.list-group {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  list-style-type: none;
+  padding: 0;
+}
+
+.list-group-item {
+  display: flex;
+  align-items: center;
+}
+
+.color-ball {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.marker-text {
+  margin-right: 10px;
+}
