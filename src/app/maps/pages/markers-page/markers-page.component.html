@@ -2,7 +2,9 @@
 
 <ul class="list-group">
   <li *ngFor="let colorMarker of markers; let i = index"
-      class="list-group-item" (dblclick)="deleteMarker(i)">
+      class="list-group-item"
+      (dblclick)="deleteMarker(i)"
+      (click)="flyTo(colorMarker.marker)">
       <div class="color-ball"
         [ngStyle]="{backgroundColor: colorMarker.color}"></div>
       <span class="marker-text">Marker {{i+1}}</span>

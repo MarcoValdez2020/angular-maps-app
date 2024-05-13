@@ -6,6 +6,10 @@ interface MarkerAndColor {
   marker: Marker;
 }
 
+interface PlainMarker{
+  color: string;
+  lngLat:number[];
+}
 @Component({
   templateUrl: './markers-page.component.html',
   styleUrl: './markers-page.component.css'
@@ -33,6 +37,7 @@ export class MarkersPageComponent {
       zoom: 13,
     });
 
+    this.readFromLocalStorage();
     /**
      * se pueden crear elementos htm y mapbox los acepta
         const markerHtml = document..createElement('div');
@@ -75,12 +80,51 @@ export class MarkersPageComponent {
       color:color,
       marker:marker,
     });
+    this.saveToLocalStorage();
+
+    // actualiza el marcador en el localstorage
+    marker.on('dragend', ()=> {
+      this.saveToLocalStorage();
+    })
   }
 
   deleteMarker(index:number):void{
     this.markers[index].marker.remove();
     this.markers.splice(index,1);
+    // actualizamos la eliminación del elemento
+    this.saveToLocalStorage()
+  }
 
+  flyTo(marker:Marker):void{
+    this.map?.flyTo({
+      zoom:15,
+      center: marker.getLngLat()
+    })
+  }
+
+  saveToLocalStorage():void{
+    const plainMarkers: PlainMarker[] = this.markers.map(({color,marker})=>{
+      return {
+        color:color,
+        lngLat: marker.getLngLat().toArray()
+      }
+    });
+
+    localStorage.setItem('plainMarkers',JSON.stringify(plainMarkers));
+
+  }
+
+  readFromLocalStorage():void{
+    const plainMarkersString = localStorage.getItem('plainMarkers') ?? '[]';
+    const plainMarkers: PlainMarker[] = JSON.parse(plainMarkersString); //! es muy susceptible a fallos!
+
+    plainMarkers.forEach( ({color,lngLat}) => {
+      const [lng,lat] = lngLat
+      const coords = new LngLat(lng,lat);
+
+      this.addMarker(coords,color);
+
+    })
   }
 
 }
