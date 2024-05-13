@@ -1,0 +1,10 @@
+.list-group-item.active {
+  background-color: black;
+  border-color: black;
+}
+
+
+li {
+  cursor: pointer;
+  transition: 0.2s all;
+}
